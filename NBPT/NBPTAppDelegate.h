@@ -1,17 +1,11 @@
-//
-//  NBPTAppDelegate.h
-//  NBPT
-//
-//  Created by Peter Tseng on 11/23/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+@class TestViewController;
 
 #import <UIKit/UIKit.h>
 
-@interface NBPTAppDelegate : NSObject <UIApplicationDelegate> {
-
-}
+@interface NBPTAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> 
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) TestViewController *viewController;
+@property (nonatomic, retain) NSURL *nagURL;
 
 @end

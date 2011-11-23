@@ -1,22 +1,41 @@
-//
-//  NBPTAppDelegate.m
-//  NBPT
-//
-//  Created by Peter Tseng on 11/23/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "NBPTAppDelegate.h"
+#import "TestViewController.h"
+#import "ASIHTTPRequest.h"
+#import "JSONKit.h"
 
 @implementation NBPTAppDelegate
 
 
-@synthesize window=_window;
+@synthesize window=_window, viewController = viewController_, nagURL = nagURL_;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.stanford.edu/~patseng/NBPT/test.json"];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    
+    [request setCompletionBlock:^(void) {
+        NSString *responseString = [request responseString];
+        NSDictionary *responseDict = [responseString objectFromJSONString];
+        
+        BOOL nag = [[responseDict objectForKey:@"nag"] boolValue];
+        NSString *message = [responseDict objectForKey:@"message"];
+        self.nagURL = [NSURL URLWithString:[responseDict objectForKey:@"url"]];
+        
+        if (nag) {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Message" 
+                                                             message:message 
+                                                            delegate:self 
+                                                   cancelButtonTitle:@"Cancel" 
+                                                   otherButtonTitles:@"Go",nil] autorelease];
+            [alert show];
+        }
+
+    }];
+    
+    [request startAsynchronous];
     return YES;
 }
 
@@ -61,8 +80,17 @@
 
 - (void)dealloc
 {
-    [_window release];
+    self.window = nil;
+    self.viewController = nil;
     [super dealloc];
+}
+
+#pragma mark UIAlertViewDelegate Method
+
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:self.nagURL];
+    }
 }
 
 @end
