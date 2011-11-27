@@ -13,7 +13,7 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
-    NSURL *url = [NSURL URLWithString:@"http://www.stanford.edu/~patseng/NBPT/test.json"];
+    NSURL *url = [NSURL URLWithString:@"http://bhargava-tseng.appspot.com/DownloadableContent/test.json"];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     
     [request setCompletionBlock:^(void) {

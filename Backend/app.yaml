@@ -1,0 +1,13 @@
+application: bhargava-tseng
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+- url: /DownloadableContent
+  static_dir: DownloadableContent
+
+- url: /.*
+  script: rest.py
+  
