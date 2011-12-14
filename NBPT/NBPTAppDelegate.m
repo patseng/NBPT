@@ -3,8 +3,13 @@
 #import "ASIHTTPRequest.h"
 #import "JSONKit.h"
 
-@implementation NBPTAppDelegate
+@interface NBPTAppDelegate () 
 
+- (void)initiateRequest;
+
+@end
+
+@implementation NBPTAppDelegate
 
 @synthesize window=_window, viewController = viewController_, nagURL = nagURL_;
 @synthesize gameData = _gameData;
@@ -15,6 +20,11 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
+    [self initiateRequest];
+    return YES;
+}
+
+- (void)initiateRequest {
     NSURL *url = [NSURL URLWithString:@"http://bhargava-tseng.appspot.com/DownloadableContent/test.json"];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     
@@ -32,15 +42,14 @@
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Message" 
                                                              message:message 
                                                             delegate:self 
-                                                   cancelButtonTitle:@"Cancel" 
-                                                   otherButtonTitles:@"Go",nil] autorelease];
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"Play",nil] autorelease];
             [alert show];
         }
-
+        
     }];
     
     [request startAsynchronous];
-    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -92,10 +101,7 @@
 #pragma mark UIAlertViewDelegate Method
 
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if(buttonIndex == 1) {
-        [self.viewController setWithScrambledWord:[self.gameData objectForKey:@"scrambled"] andAnswer:[self.gameData objectForKey:@"unscrambled"]];
-        //[[UIApplication sharedApplication] openURL:self.nagURL];
-    }
+    [self.viewController setWithScrambledWord:[self.gameData objectForKey:@"scrambled"] andAnswer:[self.gameData objectForKey:@"unscrambled"]];
 }
 
 @end
