@@ -7,5 +7,6 @@
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) TestViewController *viewController;
 @property (nonatomic, retain) NSURL *nagURL;
+@property (nonatomic, retain) NSDictionary *gameData;
 
 @end

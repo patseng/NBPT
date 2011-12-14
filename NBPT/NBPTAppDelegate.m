@@ -7,9 +7,11 @@
 
 
 @synthesize window=_window, viewController = viewController_, nagURL = nagURL_;
+@synthesize gameData = _gameData;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    viewController_ = [[TestViewController alloc] init];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
@@ -23,6 +25,8 @@
         BOOL nag = [[responseDict objectForKey:@"nag"] boolValue];
         NSString *message = [responseDict objectForKey:@"message"];
         self.nagURL = [NSURL URLWithString:[responseDict objectForKey:@"url"]];
+        self.gameData = [[responseDict objectForKey:@"word puzzles"] objectAtIndex:0];
+        
         
         if (nag) {
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Message" 
@@ -89,7 +93,8 @@
 
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:self.nagURL];
+        [self.viewController setWithScrambledWord:[self.gameData objectForKey:@"scrambled"] andAnswer:[self.gameData objectForKey:@"unscrambled"]];
+        //[[UIApplication sharedApplication] openURL:self.nagURL];
     }
 }
 

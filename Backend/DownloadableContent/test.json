@@ -1,5 +1,11 @@
 {
     "nag": true,
     "message": "Google app engine is set up!",
-    "url": "http://bhargava-tseng.appspot.com/"
+    "url": "http://bhargava-tseng.appspot.com/",
+    "word puzzles": [
+        {
+            "unscrambled": "scramble",
+            "scrambled": "abcelmrs"
+        }
+    ]
 }
